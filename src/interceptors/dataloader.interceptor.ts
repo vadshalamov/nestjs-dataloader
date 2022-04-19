@@ -13,7 +13,9 @@ export class DataloaderInterceptor implements NestInterceptor {
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const gqlContext: Record<string, unknown> = GqlExecutionContext.create(context).getContext();
-    gqlContext[GQL_CONTEXT_KEY] = this.dataloaderDiscovery.createDataloaderMap(GqlExecutionContext.create(context));
+    if (gqlContext) {
+      gqlContext[GQL_CONTEXT_KEY] = this.dataloaderDiscovery.createDataloaderMap(GqlExecutionContext.create(context));
+    }
     return next.handle();
   }
 }
